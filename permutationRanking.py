@@ -1,6 +1,6 @@
 # ----------------------------------------------------------------------------
 #  _______________________________
-# < Word Permutation Rank - by Christopher Jones >
+# < Word Permutation Ranking - by Christopher Jones >
 #  -------------------------------
 # 1. convert letters to number ranking
 # 2. figure out for each number calculate l, how many numbers to the
@@ -20,16 +20,15 @@ from math import factorial
 
 def readInput(argv):
 
-    inputWord = argv[1].rstrip().upper()
-    wordList = calculateRanking(inputWord)
+    inputWord = argv[1].rstrip()
 
     if inputWord is not None and inputWord.isalpha():
 
-        wordList = calculateRanking(inputWord)
-        lessThenList = calcluateValuesLessThenToTheRight(wordList)
+        wordList = stringToAsciiList(inputWord)
+        lessThenList = calcluatePrecedingValues(wordList)
         permutationsLost = calculateDuplicates(wordList)
         rank = calculateRank(inputWord, lessThenList, permutationsLost)
-        print "Rank of " + inputWord + " is: " + str(rank)
+        print "Rank of " + inputWord + " is: " + str(rank) + '\n'
 
     else:
         print "Error: Word can only contain letters in the alphabet.\n"
@@ -39,11 +38,11 @@ def readInput(argv):
 # Takes an input word as a string, and converts each character to ascii
 # and adds it to a list
 #
-def calculateRanking(word):
+def stringToAsciiList(word):
 
     wordList = []
     for i in range(0, len(word)):
-        currentChar = word[i]
+        currentChar = word[i].upper()
         wordList.append(ord(currentChar))
     return wordList
 
@@ -52,7 +51,7 @@ def calculateRanking(word):
 # Takes a list of characters as input, and returns a list contains the number
 # of values less then that value to the right in the original list
 #
-def calcluateValuesLessThenToTheRight(word):
+def calcluatePrecedingValues(word):
 
     lessThenList = []
     for i in range(0, len(word)):
@@ -63,6 +62,22 @@ def calcluateValuesLessThenToTheRight(word):
         lessThenList.append(numbersLessThenCurrent)
     return lessThenList
 
+#
+# Takes a list of characters as input and returns a dictionary
+# containing the ascii value and its frequency in the list
+#
+def characterFrequencies(word):
+
+    characterFrequency = dict()
+
+    for i in range(0, len(word)):
+        currentChar = word[i]
+        if currentChar in characterFrequency:
+            characterFrequency[currentChar] += 1
+        else:
+            characterFrequency[currentChar] = 1    
+
+    return characterFrequency
 
 #
 # Takes a list of characters as input, and returns a list containing the
@@ -71,17 +86,11 @@ def calcluateValuesLessThenToTheRight(word):
 def calculateDuplicates(word):
 
     permutationsLost = dict()
-    characterFrequency = dict()
     currentValue = 1
 
     # first create character frequency dictionary
-    for i in range(0, len(word)):
-        currentChar = word[i]
-        if currentChar in characterFrequency:
-            characterFrequency[currentChar] += 1
-        else:
-            characterFrequency[currentChar] = 1
-
+    characterFrequency = characterFrequencies(word)
+   
     # then iterate over all key/values, count the number of duplications
     for key in characterFrequency:
         if key != 1:
@@ -114,5 +123,9 @@ def calculateRank(word, lessThenToTheRight, duplications):
     return int(rank)
 
 if __name__ == "__main__":
-
+    # Error check params
+    if len(sys.argv) != 2:
+        print "permutationRanking: incorrect usage"
+        print "Correct useage is: python permutationRanking.py WordToFindRankingOf\n"
+        sys.exit(0)
     readInput(sys.argv)
