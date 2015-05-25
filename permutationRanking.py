@@ -18,20 +18,20 @@ import sys
 from math import factorial
 
 
-def readInput(argv):
+def readInput(argv, output=sys.stdout):
 
     inputWord = argv[1].rstrip()
 
     if inputWord is not None and inputWord.isalpha():
 
         wordList = stringToAsciiList(inputWord)
-        lessThenList = calcluatePrecedingValues(wordList)
+        precedingList = calcluatePrecedingValues(wordList)
         permutationsLost = calculateDuplicates(wordList)
-        rank = calculateRank(inputWord, lessThenList, permutationsLost)
-        print "Rank of " + inputWord + " is: " + str(rank) + '\n'
+        rank = calculateRank(inputWord, precedingList, permutationsLost)
+        output.write("Rank of " + inputWord + " is: " + str(rank) + '\n')
 
     else:
-        print "Error: Word can only contain letters in the alphabet.\n"
+        output.write("Error: Word can only contain letters in the alphabet.\n")
 
 
 #
@@ -53,14 +53,14 @@ def stringToAsciiList(word):
 #
 def calcluatePrecedingValues(word):
 
-    lessThenList = []
+    precedingList = []
     for i in range(0, len(word)):
         numbersLessThenCurrent = 0
         for x in range(i, len(word)):
             if word[x] < word[i]:
                 numbersLessThenCurrent += 1
-        lessThenList.append(numbersLessThenCurrent)
-    return lessThenList
+        precedingList.append(numbersLessThenCurrent)
+    return precedingList
 
 #
 # Takes a list of characters as input and returns a dictionary
@@ -85,22 +85,20 @@ def characterFrequencies(word):
 #
 def calculateDuplicates(word):
 
-    permutationsLost = dict()
+    permutationsLost = []
     currentValue = 1
-
-    # first create character frequency dictionary
     characterFrequency = characterFrequencies(word)
    
-    # then iterate over all key/values, count the number of duplications
+    # currentValue is equal to (number of duplications per letter)!
     for key in characterFrequency:
         if key != 1:
-            currentValue = currentValue * factorial(characterFrequency[key])
+            currentValue *= factorial(characterFrequency[key])
 
     # next, iterate down the characters and figure out the number of
     # duplications with the [i-1] character removed from the dictionary
     for i in range(0, len(word)):
         currentChar = word[i]
-        permutationsLost[i] = currentValue
+        permutationsLost.append(currentValue)
         currentValue = currentValue / \
             factorial(characterFrequency[currentChar])
         characterFrequency[currentChar] -= 1
@@ -114,16 +112,16 @@ def calculateDuplicates(word):
 # Calculates the rank based off of the original word, and the number
 # of permutations lost by character duplicates
 #
-def calculateRank(word, lessThenToTheRight, duplications):
+def calculateRank(word, precedingList, duplications):
 
     rank = 1
     for i in range(0, len(word)):
-        rank += float(lessThenToTheRight[i]) / \
+        rank += float(precedingList[i]) / \
             (float(duplications[i])) * (factorial(len(word) - (i + 1)))
     return int(rank)
 
+
 if __name__ == "__main__":
-    # Error check params
     if len(sys.argv) != 2:
         print "permutationRanking: incorrect usage"
         print "Correct useage is: python permutationRanking.py WordToFindRankingOf\n"
