@@ -32,8 +32,6 @@ from math import factorial
 # Reads in the command line parameter, checks if it's a word, and finds it's
 # permutation ranking using the steps above
 #
-
-
 def readInput(argv, output=sys.stdout):
 
     inputWord = argv[1].rstrip()
@@ -82,8 +80,6 @@ def calcluatePrecedingValues(word):
 # Takes a list of characters as input and returns a dictionary
 # containing the ascii value and its frequency in the list
 #
-
-
 def characterFrequencies(word):
 
     characterFrequency = dict()
@@ -101,8 +97,6 @@ def characterFrequencies(word):
 # Takes a list of characters as input, and returns a list containing the
 # number of permutations lost by duplications
 #
-
-
 def calculateDuplicates(word):
 
     permutationsLost = []
