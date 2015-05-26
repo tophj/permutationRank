@@ -1,6 +1,7 @@
 import unittest
 import sys
 import os.path
+import time
 sys.path.append(
     os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 from permutationRanking import readInput
@@ -181,6 +182,14 @@ class TestPermutationRanking(unittest.TestCase):
             calculateRank(testWord5, precedingList5, permutationsLost5), 10743)
         self.assertEqual(
             calculateRank(testWord6, precedingList6, permutationsLost6), 53032)
+
+    def testTime(self):
+    	testWord = ["permutationRanking", "APPPEWRTJDUGIFMNEOTYFGDSE"]
+    	start_time = time.time()
+    	output = StringIO()
+        readInput(testWord, output=output)
+    	runTime =(time.time() - start_time)
+    	self.assertTrue(runTime < 0.5)
 
 if __name__ == '__main__':
     unittest.main()
