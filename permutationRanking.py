@@ -3,16 +3,16 @@
 # < Permutation Ranking - by Christopher Jones >
 #  -------------------------------
 #
-# A way to mathematically figure out a word's rank among it's other permutations
+# A way to mathematically figure out a word's rank among it's permutations
 #
 # 1. Convert letters to ascii value
-# 2. Iterate over, figure out how many ascii values are lower than 
+# 2. Iterate over, figure out how many ascii values are lower than
 #    the current value(including duplicates)
 #    EX. BAAA = [66,65,65,65] = [3,0,0,0]
 # 3. While iterating, calculate the production
 #    of the factorial of all duplicates
 #    EX. BAAA (current is B) = (# of A's)! * (# of B's)! = 3! * 1! = 6
-# 4. Factor out the number of duplicates, by dividing the number found in 2, 
+# 4. Factor out the number of duplicates, by dividing the number found in 2,
 #    by the number found in 3
 #    EX. BAAA = [3,0,0,0] (found 2), and [6,2,1,1] (from 3)
 #             = 3/6, 0/2, 0/1, 0/1 = [1/2,0,0,0]
@@ -32,6 +32,8 @@ from math import factorial
 # Reads in the command line parameter, checks if it's a word, and finds it's
 # permutation ranking using the steps above
 #
+
+
 def readInput(argv, output=sys.stdout):
 
     inputWord = argv[1].rstrip()
@@ -80,6 +82,8 @@ def calcluatePrecedingValues(word):
 # Takes a list of characters as input and returns a dictionary
 # containing the ascii value and its frequency in the list
 #
+
+
 def characterFrequencies(word):
 
     characterFrequency = dict()
@@ -89,7 +93,7 @@ def characterFrequencies(word):
         if currentChar in characterFrequency:
             characterFrequency[currentChar] += 1
         else:
-            characterFrequency[currentChar] = 1    
+            characterFrequency[currentChar] = 1
 
     return characterFrequency
 
@@ -97,12 +101,14 @@ def characterFrequencies(word):
 # Takes a list of characters as input, and returns a list containing the
 # number of permutations lost by duplications
 #
+
+
 def calculateDuplicates(word):
 
     permutationsLost = []
     currentValue = 1
     characterFrequency = characterFrequencies(word)
-   
+
     # currentValue is equal to (number of duplications per letter)!
     for key in characterFrequency:
         if key != 1:
@@ -138,6 +144,6 @@ def calculateRank(word, precedingList, duplications):
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print "permutationRanking: incorrect usage"
-        print "Correct useage is: python permutationRanking.py WordToFindRankingOf\n"
+        print "Correct usage is: python permutationRanking.py INPUTWORD\n"
         sys.exit(0)
     readInput(sys.argv)

@@ -1,6 +1,6 @@
 # Permutation Ranking
 
-## Calculates the alphabetical ranking of a given string compared to all other permutations.
+Calculates the alphabetical ranking of a given string compared to all other permutations.
 
 ## Steps:
 
@@ -29,6 +29,6 @@
 
 ## Usage:
 
-Correct useage is: python permutationRanking.py WordToFindRankingOf
+Correct usage is: python permutationRanking.py WordToFindRankingOf
 
 
