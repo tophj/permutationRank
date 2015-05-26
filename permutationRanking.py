@@ -4,7 +4,11 @@
 #  -------------------------------
 #
 # A way to mathematically figure out a word's rank among it's permutations
+# 
+# Usage:
+# Correct usage is: python permutationRanking.py INPUTWORD
 #
+# Steps:
 # 1. Convert letters to ascii value
 # 2. Iterate over, figure out how many ascii values are lower than
 #    the current value(including duplicates)
